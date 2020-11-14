@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -10,19 +11,19 @@ namespace Lab4
     class Program
     {
         static void Main(string[] args)
-        {
-            Console.WriteLine("Начало Main");
-            Action[] delegates = new Action[] { MyAction, MyAction, MyAction, MyAction, MyAction };
-            Parallel.WaitAll(delegates);
-            Console.WriteLine("Конец Main");
-            Console.ReadLine();
-        }
-
-        public static void MyAction()
-        {
-            var threadId = Thread.CurrentThread.ManagedThreadId;
-            Console.WriteLine($"Сейчас работает поток {threadId}");
-            Thread.Sleep(3000);
+        {            
+            var logBuffer = new LogBuffer(3, 2000);
+            try
+            {
+                for (int i = 0; i < 20; i++)
+                {
+                    logBuffer.Add(i.ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }           
         }
     }
 }
